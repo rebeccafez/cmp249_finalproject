@@ -2,7 +2,9 @@ version: "3"
 
 services:
   php:
-    image: php-mysql
+    build:
+      context: ./docker
+      dockerfile: php.Dockerfile
     container_name: cozymusic-php
     volumes:
       - "./app:/var/www/html"
@@ -10,7 +12,7 @@ services:
       - mariadb
 
   nginx:
-    image: nginx:latest
+    image: nginx:alpine
     container_name: cozymusic-nginx
     ports:
       - "80:80"
@@ -29,6 +31,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - mariadbdata:/var/lib/mysql
+      - ./db:/scripts
 
 volumes:
   mariadbdata:

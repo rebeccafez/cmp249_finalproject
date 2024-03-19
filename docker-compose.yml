@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  php:
+    image: php-mysql
+    container_name: cozymusic-php
+    volumes:
+      - "./app:/var/www/html"
+    depends_on:
+      - mariadb
+
+  nginx:
+    image: nginx:latest
+    container_name: cozymusic-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - php
+    volumes:
+      - ./app:/var/www/html
+      - ./config:/etc/nginx/conf.d
+
+  mariadb:
+    image: mariadb:11.2.3
+    container_name: cozymusic-mariadb
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - mariadbdata:/var/lib/mysql
+
+volumes:
+  mariadbdata:

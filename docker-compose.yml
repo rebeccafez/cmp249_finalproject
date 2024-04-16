@@ -6,6 +6,11 @@ services:
       context: ./docker
       dockerfile: php.Dockerfile
     container_name: cozymusic-php
+    environment:
+      MYSQL_HOST: cozymusic-mariadb
+      MYSQL_DB: cozymusic
+      MYSQL_USER: cozymusic_app
+      MYSQL_PASSWORD: ${MYSQL_USER_PASSWORD}
     volumes:
       - "./app:/var/www/html"
     depends_on:
